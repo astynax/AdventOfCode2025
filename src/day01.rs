@@ -1,18 +1,9 @@
-use std::fs::read_to_string;
+use crate::types::Day;
+use crate::input::{parse_each_with, read_lines};
 
-use crate::types::{Day, StepResult};
+type Step = (Dir, usize);
 
-pub struct Day01;
-
-fn read_lines(path: &str) -> Result<Vec<String>, String> {
-    let text = read_to_string(path)
-        .map_err(|e| e.to_string())?;
-    Ok(text
-       .lines()
-       .map(|l| l.to_string())
-       .collect()
-    )
-}
+pub struct Day01 { lines: Vec<Step> }
 
 fn parse(l: &String) -> Result<(Dir, usize), String> {
     let dir: Dir = l.get(0..1)
@@ -35,7 +26,7 @@ fn parse(l: &String) -> Result<(Dir, usize), String> {
 }
 
 #[derive(Debug)]
-enum Dir { L, R }
+pub enum Dir { L, R }
 
 #[derive(Debug)]
 struct State {
@@ -46,8 +37,8 @@ struct State {
 fn stepper1(state: State, dir_and_count: &(Dir, usize)) -> State {
     let (dir, count) = dir_and_count;
     let pos: i64 = (match dir {
-        Dir::L => state.position - (count.clone() as i64),
-        Dir::R => state.position + (count.clone() as i64),
+        Dir::L => state.position - (*count as i64),
+        Dir::R => state.position + (*count as i64),
     }).rem_euclid(100);
     let zeroes = if pos == 0 { state.zeroes + 1 } else { state.zeroes };
     State {
@@ -67,38 +58,51 @@ fn stepper2(current: State, dir_and_count: &(Dir, usize)) -> State {
     let pos = unbound_pos.rem_euclid(100);
     let mut zeroes = current.zeroes;
     zeroes += full_rotations;
-    if pos == 0 && current.position != 0 { zeroes += 1 }
-    else if unbound_pos != pos && current.position != 0 { zeroes += 1 }
+    if current.position != 0 && (
+       pos == 0 || unbound_pos != pos
+    ) { zeroes += 1 }
     State {
         zeroes,
         position: pos
     }
 }
 
-fn run<T>(stepper: T) -> Result<usize, String>
-where T: Fn(State, &(Dir, usize)) -> State {
-    let input = read_lines("input/day01.txt")?;
-    let steps = input.iter()
-        .map(parse).collect::<Result<Vec<(Dir, usize)>,String>>()?;
-    let state = steps.iter().fold(
+fn run<T>(input: &[Step], stepper: T) -> usize
+where T: Fn(State, &Step) -> State {
+    input.iter().fold(
         State {zeroes: 0, position: 50},
         stepper
-    );
-    Ok(state.zeroes)
+    ).zeroes
 }
 
 impl Day for Day01 {
-    fn step1() -> StepResult {
-        println!("Step 1: {}", run(stepper1)?);
-        Ok(())
+    type Input1 = Vec<(Dir, usize)>;
+    type Input2 = Vec<(Dir, usize)>;
+
+    fn prepare_input1(&self) -> Result<&Self::Input1, String> {
+        Ok(&self.lines)
     }
 
-    fn step2() -> StepResult {
-        println!("Step 2: {}", run(stepper2)?);
+    fn prepare_input2(&self) -> Result<&Self::Input2, String> {
+        Ok(&self.lines)
+    }
+
+    fn step1(&self, input: &Self::Input1) {
+        println!("Step 1: {}", run(input, stepper1));
+    }
+
+    fn step2(&self, input: &Self::Input2) {
+        println!("Step 2: {}", run(input, stepper2));
+    }
+
+    fn new() -> Self { Day01 { lines: Vec::new() } }
+
+    fn setup(&mut self) -> Result<(), String> {
+        let input = read_lines("input/day01.txt")?;
+        self.lines = parse_each_with(parse, input)?;
         Ok(())
     }
 }
-
 
 #[cfg(test)]
 mod tests {
