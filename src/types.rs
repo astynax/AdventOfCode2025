@@ -4,8 +4,8 @@ pub trait Day {
     type Input1;
     type Input2;
 
-    fn prepare_input1(&self) -> Result<&Self::Input1, String>;
-    fn prepare_input2(&self) -> Result<&Self::Input2, String>;
+    fn input1(&self) -> &Self::Input1;
+    fn input2(&self) -> &Self::Input2;
 
     fn step1(&self, input: &Self::Input1);
     fn step2(&self, input: &Self::Input2);
@@ -23,9 +23,7 @@ pub trait Day {
 #[inline]
 fn run_result<T: Day + ?Sized>(day: &mut T) -> Result<(), String> {
     day.setup()?;
-    let input1 = day.prepare_input1()?;
-    day.step1(input1);
-    let input2 = day.prepare_input2()?;
-    day.step2(input2);
+    day.step1(day.input1());
+    day.step2(day.input2());
     Ok(())
 }

@@ -1,5 +1,5 @@
 use crate::types::Day;
-use crate::input::{parse_each_with, read_lines};
+use crate::input::read_lines;
 
 type Step = (Dir, usize);
 
@@ -79,13 +79,8 @@ impl Day for Day01 {
     type Input1 = Vec<(Dir, usize)>;
     type Input2 = Vec<(Dir, usize)>;
 
-    fn prepare_input1(&self) -> Result<&Self::Input1, String> {
-        Ok(&self.lines)
-    }
-
-    fn prepare_input2(&self) -> Result<&Self::Input2, String> {
-        Ok(&self.lines)
-    }
+    fn input1(&self) -> &Self::Input1 { &self.lines }
+    fn input2(&self) -> &Self::Input2 { &self.lines }
 
     fn step1(&self, input: &Self::Input1) {
         println!("Step 1: {}", run(input, stepper1));
@@ -99,7 +94,9 @@ impl Day for Day01 {
 
     fn setup(&mut self) -> Result<(), String> {
         let input = read_lines("input/day01.txt")?;
-        self.lines = parse_each_with(parse, input)?;
+        self.lines = input.iter()
+            .map(parse)
+            .collect::<Result<_, _>>()?;
         Ok(())
     }
 }
