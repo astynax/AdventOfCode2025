@@ -76,6 +76,8 @@ where T: Fn(State, &Step) -> State {
 }
 
 impl Day for Day01 {
+    fn get_name(&self) -> String { "Day 01".to_string() }
+
     type Input1 = Vec<(Dir, usize)>;
     type Input2 = Vec<(Dir, usize)>;
 

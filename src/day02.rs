@@ -6,6 +6,8 @@ pub struct Day02 {
 }
 
 impl Day for Day02 {
+    fn get_name(&self) -> String { "Day 02".to_string() }
+
     type Input1 = Vec<(usize, usize)>;
     type Input2 = Vec<(usize, usize)>;
 

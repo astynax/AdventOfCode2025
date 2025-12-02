@@ -4,6 +4,8 @@ pub trait Day {
     type Input1;
     type Input2;
 
+    fn get_name(&self) -> String;
+
     fn input1(&self) -> &Self::Input1;
     fn input2(&self) -> &Self::Input2;
 
@@ -22,6 +24,7 @@ pub trait Day {
 
 #[inline]
 fn run_result<T: Day + ?Sized>(day: &mut T) -> Result<(), String> {
+    println!("{}", day.get_name());
     day.setup()?;
     day.step1(day.input1());
     day.step2(day.input2());
