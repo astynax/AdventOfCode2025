@@ -34,13 +34,13 @@ impl Day for Day03 {
     fn setup(&mut self) -> Result<(), String> {
         let lines = read_lines("input/day03.txt")?;
         self.banks = lines.iter()
-            .map(parse_bank)
+            .map(|s| parse_bank(s))
             .collect::<Result<_, _>>()?;
         Ok(())
     }
 }
 
-fn parse_bank(line: &String) -> Result<Bank, String> {
+fn parse_bank(line: &str) -> Result<Bank, String> {
     line.chars().map(|c| {
         let digit = c.to_digit(10)
             .map(Result::Ok)
@@ -57,9 +57,11 @@ fn max_power(bank: &Bank, of: usize) -> usize {
     let mut start = 0_usize;
     let mut max = 0_u8;
     while stop <= end {
-        for i in start..=stop {
-            if max < bank[i] {
-                max = bank[i];
+        for (i, x) in bank
+            .iter().enumerate().take(stop + 1).skip(start)  // start..=stop
+        {
+            if max < *x {
+                max = *x;
                 start = i + 1;
             }
         }
