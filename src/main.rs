@@ -2,6 +2,7 @@ mod types;
 mod input;
 mod day01;
 mod day02;
+mod day03;
 
 use types::Day;
 
@@ -16,4 +17,5 @@ fn main() {
             })).collect();
     if args.is_empty() || args.contains(&1) { day01::Day01::new().run(); }
     if args.is_empty() || args.contains(&2) { day02::Day02::new().run(); }
+    if args.is_empty() || args.contains(&3) { day03::Day03::new().run(); }
 }
