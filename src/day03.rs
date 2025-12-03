@@ -52,11 +52,9 @@ fn parse_bank(line: &str) -> Result<Bank, String> {
 
 fn max_power(bank: &Bank, of: usize) -> usize {
     let mut acc = 0;
-    let end = bank.len() - 1;
-    let mut stop = bank.len() - of;
     let mut start = 0_usize;
     let mut max = 0_u8;
-    while stop <= end {
+    for stop in (bank.len() - of)..bank.len() {
         for (i, x) in bank
             .iter().enumerate().take(stop + 1).skip(start)  // start..=stop
         {
@@ -67,7 +65,6 @@ fn max_power(bank: &Bank, of: usize) -> usize {
         }
         acc = 10 * acc + max as usize;
         max = 0;
-        stop += 1;
     }
     acc
 }
