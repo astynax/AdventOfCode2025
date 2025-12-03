@@ -87,11 +87,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn is_valid_on_examples() {
-        assert!(is_valid_id(101));
-        assert!(!is_valid_id(1010));
-        assert!(!is_valid_id(1188511885));
-        assert!(is_valid_id(1188511886));
+    fn is_made_of_halves_examples() {
+        assert!(is_made_of_halves(101));
+        assert!(!is_made_of_halves(1010));
+        assert!(!is_made_of_halves(1188511885));
+        assert!(is_made_of_halves(1188511886));
     }
 
     #[test]
