@@ -3,6 +3,7 @@ mod input;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 use types::Day;
 
@@ -13,7 +14,9 @@ fn main() {
                 eprintln!("{}", err);
                 std::process::exit(1);
             })).collect();
-    if args.is_empty() || args.contains(&1) { day01::Day01::new().run(); }
-    if args.is_empty() || args.contains(&2) { day02::Day02::new().run(); }
-    if args.is_empty() || args.contains(&3) { day03::Day03::new().run(); }
+    let days = if args.is_empty() { (1..12).collect() } else { args };
+    if days.contains(&1) { day01::Day01::new().run(); }
+    if days.contains(&2) { day02::Day02::new().run(); }
+    if days.contains(&3) { day03::Day03::new().run(); }
+    if days.contains(&4) { day04::Day04::new().run(); }
 }
