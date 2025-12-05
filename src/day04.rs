@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
-use crate::{input::read_lines, types::Day};
+use crate::types::Day;
+use crate::input::read_lines;
 
 type Pos = (usize, usize);
 
