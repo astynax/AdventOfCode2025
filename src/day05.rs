@@ -1,7 +1,7 @@
 use std::ops::RangeInclusive;
 
 use crate::types::Day;
-use crate::input::read_lines;
+use crate::input::{read_lines,parse_usize};
 
 type IdRange = RangeInclusive<usize>;
 
@@ -20,7 +20,7 @@ impl DB {
         let ids = lines.iter()
             .skip_while(|s| !s.is_empty())
             .skip(1)
-            .map(|s| parse_id(s.as_str()))
+            .map(|s| parse_usize(s.as_str()))
             .collect::<Result<Vec<_>, String>>()?;
         Ok(DB { ranges, ids })
     }
@@ -64,13 +64,9 @@ fn parse_range(line: &String) -> Result<IdRange, String> {
     let (lhs, rhs) = line.split_once('-')
         .map(Result::Ok)
         .unwrap_or(Err(format!("Non-range: {}", line)))?;
-    let l = parse_id(lhs)?;
-    let r = parse_id(rhs)?;
+    let l = parse_usize(lhs)?;
+    let r = parse_usize(rhs)?;
     Ok(l..=r)
-}
-
-fn parse_id(line: &str) -> Result<usize, String> {
-    line.parse::<usize>().map_err(|err| err.to_string())
 }
 
 pub struct Day05 {

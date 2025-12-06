@@ -17,3 +17,9 @@ pub fn read_lines(path: &str) -> Result<Vec<String>, String> {
        .collect()
     )
 }
+
+pub fn parse_usize(s: &str) -> Result<usize, String> {
+    s.parse::<usize>()
+        .map(Result::Ok)
+        .unwrap_or(Err(format!("Bad usize: {}", s)))
+}
