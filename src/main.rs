@@ -7,6 +7,7 @@ mod day04;
 mod day05;
 mod day06;
 mod day07;
+mod day08;
 
 use types::Day;
 
@@ -25,4 +26,5 @@ fn main() {
     if days.contains(&5) { day05::Day05::new().run(); }
     if days.contains(&6) { day06::Day06::new().run(); }
     if days.contains(&7) { day07::Day07::new().run(); }
+    if days.contains(&8) { day08::Day08::new().run(); }
 }
