@@ -73,8 +73,3 @@ impl Day for Day11 {
         Ok(())
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-}
